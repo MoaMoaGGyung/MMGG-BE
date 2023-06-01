@@ -18,7 +18,12 @@ Docker-compose contains Mysql databases and API backend server to send requests 
 
 ```
 git clone https://github.com/MoaMoaGGyung/MMGG-BE.git
-docker-compose up (or to debug) -d option
+docker-compose up (or to skip debug -d option)
+
+docker-compose down : stop containers
+docker-compose build : build containers
+#(not necessaries)
+
 ```
 
 
@@ -31,6 +36,18 @@ docker-compose up (or to debug) -d option
 
 - Docker-compose
 - Docker
+
+
+
+### API
+
+You can check API Swagger docs and Test API requests
+http://localhost:8080/docs
+
+
+
+
+
   
 
 
