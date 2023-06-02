@@ -3,6 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
 import sys
+from glob import glob
 
 DB_USER = os.environ.get("DATABASE_USERNAME")
 DB_PASSWORD = os.environ.get("DATABASE_PASSWORD")
@@ -20,8 +21,7 @@ try:
     )
 except:
     sys.exit(1)
-    
-
+            
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()

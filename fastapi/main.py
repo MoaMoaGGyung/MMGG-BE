@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 import models, crud
 import json
+from glob import glob
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -90,3 +91,42 @@ def read_root():
 def read_item(item_id: int, q: Union[str, None] = None):
     #Union 여러개의 타입 허용
     return {"item_id": item_id, "q": q}
+
+@app.get("/execute-sql-file")
+def init_sql():
+    sql_file_paths = glob('./sql/*.sql')
+    print(sql_file_paths)
+    _return_message = {}
+    for sql in sql_file_paths:
+        with open(sql, "r") as f:
+            sql_queries = f.readlines()
+        session = SessionLocal()
+        try:
+            for sql_query in sql_queries:
+                sql_query.replace("\n", "")
+                result = session.execute(sql_query)
+            
+            session.commit()
+            _return_message[f"{sql.split('/')[-1]}"]= "SQL file executed successfully"
+        except Exception as e:
+            session.rollback()
+            _return_message[f"{sql.split('/')[-1]}"]= f"SQL execution failed: {str(e)}"
+        finally:
+            session.close()
+    
+    return _return_message
+            
+@app.get("/remove-all-databases")
+def remove_sql():
+    session = SessionLocal()
+    try:
+        result1 = session.execute('DELETE from mmgg.boards')
+        result2 = session.execute('DELETE from mmgg.contents')
+        session.commit()
+        return {"message": "SQL file executed successfully"}
+    except Exception as e:
+        session.rollback()
+        return {"message": f"SQL execution failed: {str(e)}"}
+    finally:
+        session.close()        
+        
