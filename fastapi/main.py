@@ -36,6 +36,23 @@ def read_department(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
     boards = crud.get_boards(db=db, skip=skip, limit=limit)
     return boards
 
+@app.get("/posts/hot")
+def read_posts_hot(limit: int = 10, db: Session = Depends(get_db)):
+    _return_dict = []
+    _contents = crud.get_hot_contents(db, limit)
+    for content in _contents:
+        content = content.__dict__
+        _temp_dict = {
+            "department": "temp_department",
+            "board": "temp_board",
+            'title': content["title"],
+            'uploadDate': content["update"],
+            'link': "temp",
+            'dailyFluctuation': content["click_cnt"]
+        }
+        _return_dict.append(_temp_dict)
+    return _return_dict
+
 @app.get("/posts/{department_id}")
 def read_contents_by_department(
         skip: int = 0,
@@ -106,7 +123,8 @@ def read_recent_posts(
         _temp_dict["recent_posts"] = _contents_list
         _return_dict.append(_temp_dict)
     return _return_dict
-    
+
+
     
 @app.get("/")
 def read_root():

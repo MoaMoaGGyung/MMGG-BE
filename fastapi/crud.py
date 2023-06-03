@@ -32,5 +32,10 @@ def get_contents_bydepartmentid(db: Session, department_id: int, limit = 10):
               .order_by(models.Contents.update.desc())
               .limit(limit=limit)
               .all())
-
+    
+def get_hot_contents(db: Session, limit = 10):
+    return (db.query(models.Contents)
+              .order_by(models.Contents.click_cnt.desc())
+              .limit(limit=limit)
+              .all())
     
