@@ -1,3 +1,9 @@
 INSERT INTO `mmgg`.`boards` VALUES ('Test 1', 1, 87, 'Board 1');
 INSERT INTO `mmgg`.`boards` VALUES ('Test 2', 1, 101, 'Board 2');
 INSERT INTO `mmgg`.`boards` VALUES ('Test 3', 1, 103, 'Board 3');
+INSERT INTO `mmgg`.`boards` VALUES ('Test 4', 2, 201, 'Board 4');
+INSERT INTO `mmgg`.`boards` VALUES ('Test 5', 2, 202, 'Board 5');
+INSERT INTO `mmgg`.`boards` VALUES ('Test 6', 2, 203, 'Board 6');
+INSERT INTO `mmgg`.`boards` VALUES ('Test 7', 3, 301, 'Board 7');
+INSERT INTO `mmgg`.`boards` VALUES ('Test 8', 3, 302, 'Board 8');
+INSERT INTO `mmgg`.`boards` VALUES ('Test 9', 3, 303, 'Board 9');
