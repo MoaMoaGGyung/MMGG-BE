@@ -18,6 +18,7 @@ class Contents(Base):
 
     content_id = Column(Integer, primary_key=True, index=True)
     board_id = Column(Integer, index=True)
+    department_id = Column(Integer, index=True)
     title = Column(String(1000))
     body = Column(String(10000))
     writer_name = Column(String(100))

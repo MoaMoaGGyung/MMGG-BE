@@ -77,20 +77,40 @@ def read_contents_by_department(
     # print(_return_dict)
     # json_string = json.dumps(_return_dict, indent=4, default=str)
     return _return_dict
-    
-    
-    
 
+@app.get("/recent-posts")   
+def read_recent_posts(        
+        limit: int = 100,
+        db: Session = Depends(get_db)):
+    _return_dict = []
+    _departments_id = crud.get_department_id(db)
+    _departments_id =  [i[0] for i in _departments_id]
+    
+    for department_id in _departments_id:
+        _temp_dict = {}
+        # _temp_dict["department"] = {"name": "temp", "id": department_id}
+        # _temp_dict["recent_posts"] = []
+        _contents_list = []
+        _contents = crud.get_contents_bydepartmentid(db, department_id, limit)
+        for ex in _contents:            
+            ex = ex.__dict__ # to dict
+            # print(ex["content_id"])
+            _t_dict = {
+                'title': ex["title"],
+                'link': "temp"
+            }
+            # print(_content_dict)
+            _contents_list.append(_t_dict)
+            
+        _temp_dict["department"] = {"name": "temp", "id": department_id}
+        _temp_dict["recent_posts"] = _contents_list
+        _return_dict.append(_temp_dict)
+    return _return_dict
+    
+    
 @app.get("/")
 def read_root():
     return {"Hello" : "World"}
-
-@app.get("/items/{item_id}")
-# A "path" is also commonly called an "endpoint" or a "route".
-# "path" is the main way to separate "concerns" and "resources".
-def read_item(item_id: int, q: Union[str, None] = None):
-    #Union 여러개의 타입 허용
-    return {"item_id": item_id, "q": q}
 
 @app.get("/execute-sql-file")
 def init_sql():

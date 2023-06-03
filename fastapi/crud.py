@@ -20,3 +20,17 @@ def get_contents_byid(db: Session, board_id: int, skip: int =0, limit = 100):
               .offset(skip)
               .limit(limit)
               .all())
+    
+def get_department_id(db: Session):
+    return (db.query(models.Boards.department_id)
+              .distinct())
+    
+    
+def get_contents_bydepartmentid(db: Session, department_id: int, limit = 10):
+    return (db.query(models.Contents)
+              .filter(models.Contents.department_id == department_id)
+              .order_by(models.Contents.update.desc())
+              .limit(limit=limit)
+              .all())
+
+    
