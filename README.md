@@ -57,7 +57,7 @@ Installation 항목에서 서술한대로 진행후
 
 ### TO-DO
 - API를 요청하여 학과 - Code를 작업하여 저장할 필요가 있음
-- 2,3 API 작성
+- ~~2,3 API 작성~~
 - API로 부터 일정 주기로 DB에 저장후 -> Logstash -> es indexing pipeline
 
 
