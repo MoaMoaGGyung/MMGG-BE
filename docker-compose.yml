@@ -7,26 +7,26 @@ services:  # 컨테이너의 서비스라는것을 정의
   # This task is only performed during the *initial* startup of the stack. On all
   # subsequent runs, the service simply returns immediately, without performing
   # any modification to existing users.
-  # fastapi_search:
-  #   depends_on:
-  #     mysql:
-  #       condition: service_healthy
-  #   container_name: fastapi_search
-  #   platform: linux/x86_64
-  #   build: ./elk/search_server
-  #   restart: always
-  #   tty: true
-  #   volumes:
-  #     - ./elk/search_server:/app
-  #     - ./crawling/sample1000.json:/app/sample1000.json
-  #     - ./crawling/sample10000.json:/app/sample10000.json
-  #   ports:
-  #     - 8456:8456
-  #   environment:
-  #     - DATABASE_USERNAME=root
-  #     - DATABASE_PASSWORD=1234
-  #     - DATABASE=btree_project
-  #     - DATABASE_HOST=mysql
+  fastapi_search:
+    depends_on:
+      mysql:
+        condition: service_healthy
+      fastapi:
+        condition: service_started
+    container_name: fastapi_search
+    platform: linux/x86_64
+    build: ./scheduler
+    restart: always
+    tty: true
+    volumes:
+      - ./scheduler:/app
+    ports:
+      - 8456:8456
+    environment:
+      - DATABASE_USERNAME=root
+      - DATABASE_PASSWORD=dlatl
+      - DATABASE=mmgg
+      - DATABASE_HOST=mysql
   # setup:
   #   build:
   #     context: elk/setup/

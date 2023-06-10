@@ -29,8 +29,7 @@ def get_db():
         yield db
     finally:
         db.close()
-        
-        
+             
 @app.get("/departments/")
 def read_department(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     boards = crud.get_boards(db=db, skip=skip, limit=limit)
@@ -47,10 +46,17 @@ def read_posts_hot(limit: int = 10, db: Session = Depends(get_db)):
             "board": "temp_board",
             'title': content["title"],
             'uploadDate': content["update"],
-            'link': "temp",
             'dailyFluctuation': content["click_cnt"]
         }
-        _return_dict.append(_temp_dict)
+        _dept_dict = {
+            "name": "temp",
+            "id": content["department_id"]
+        }
+        _board_dict = {
+            "name" : "temp",
+            "id": content["board_id"]
+        }
+        _return_dict.append({"department": _dept_dict, "board": _board_dict, "post": _temp_dict})
     return _return_dict
 
 @app.get("/posts/{department_id}")
@@ -75,11 +81,10 @@ def read_contents_by_department(
             ex = ex.__dict__ # to dict
             # print(ex["content_id"])
             _temp_dict = {
-                'index': ex["content_id"],
+                'id': ex["content_id"],
                 'title': ex["title"],
                 'uploadDate': ex["update"],
                 'view': ex["click_cnt"],
-                'link': "temp"
             }
             # print(_content_dict)
             _contents_list.append(_temp_dict)
@@ -87,7 +92,7 @@ def read_contents_by_department(
         print(_contents_list)
                 
         # _contents.append(_contents_list)
-        _return_dict["boards"].append({"name": "temp", "article": _contents_list})
+        _return_dict["boards"].append({"name": "temp", "id": board_id, "posts": _contents_list})
         
         
     # print(_contents)
@@ -114,7 +119,9 @@ def read_recent_posts(
             # print(ex["content_id"])
             _t_dict = {
                 'title': ex["title"],
-                'link': "temp"
+                'dId': department_id,
+                'bId': ex["board_id"],
+                'pId': ex["content_id"]
             }
             # print(_content_dict)
             _contents_list.append(_t_dict)
@@ -123,9 +130,7 @@ def read_recent_posts(
         _temp_dict["recent_posts"] = _contents_list
         _return_dict.append(_temp_dict)
     return _return_dict
-
-
-    
+ 
 @app.get("/")
 def read_root():
     return {"Hello" : "World"}
