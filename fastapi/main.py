@@ -59,7 +59,7 @@ def read_posts_hot(limit: int = 10, db: Session = Depends(get_db)):
         _return_dict.append({"department": _dept_dict, "board": _board_dict, "post": _temp_dict})
     return _return_dict
 
-@app.get("/posts/department/{department_id}/board/{board_id}/post/{content_id}")
+@app.get("/posts/department/{department_id}/board/{board_id}/content/{content_id}")
 def read_detail_content_by_contentId(
         department_id: int = 1,
         board_id: int = 1,
