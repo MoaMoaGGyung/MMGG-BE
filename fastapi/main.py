@@ -36,7 +36,7 @@ def read_department(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
     boards = crud.get_boards(db=db, skip=skip, limit=limit)
     return boards
 
-@app.get("/posts/hot")
+@app.get("/hot")
 def read_posts_hot(limit: int = 10, db: Session = Depends(get_db)):
     _return_dict = []
     _contents = crud.get_hot_contents(db, limit)
@@ -60,7 +60,7 @@ def read_posts_hot(limit: int = 10, db: Session = Depends(get_db)):
         _return_dict.append({"department": _dept_dict, "board": _board_dict, "post": _temp_dict})
     return _return_dict
 
-@app.get("/posts/department/{department_id}/board/{board_id}/content/{content_id}")
+@app.get("/department/{department_id}/board/{board_id}/content/{content_id}")
 def read_detail_content_by_contentId(
         department_id: int = 1,
         board_id: int = 1,
@@ -98,7 +98,7 @@ def read_detail_content_by_contentId(
     # }
         
     # return _return_dict
-@app.get("/posts/department/{department_id}/board/{board_id}")
+@app.get("/department/{department_id}/board/{board_id}")
 def read_department_board_by_boardId(
         skip: int = 0, # skip page
         limit: int = 100, # page
@@ -135,7 +135,7 @@ def read_department_board_by_boardId(
     }
         
     return _return_dict
-@app.get("/posts/department/{department_id}")
+@app.get("/department/{department_id}")
 def read_contents_by_department(
         skip: int = 0,
         limit: int = 100,
