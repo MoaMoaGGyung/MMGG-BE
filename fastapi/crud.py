@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
-
+from datetime import datetime, timedelta
 import models, schemas
 
 def get_boards(db: Session, skip: int = 0, limit = 100):
@@ -40,6 +40,7 @@ def get_contents_bydepartmentid(db: Session, department_id: int, limit = 10):
     
 def get_hot_contents(db: Session, limit = 10):
     return (db.query(models.Contents)
+              .filter(models.Contents.update > datetime.utcnow() - timedelta(weeks=1) + timedelta(hours=9))
               .order_by(models.Contents.click_cnt.desc())
               .limit(limit=limit)
               .all())

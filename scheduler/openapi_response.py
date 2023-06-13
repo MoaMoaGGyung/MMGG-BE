@@ -190,7 +190,8 @@ def get_homepageBoardContents():
         try:
             response = requests.get(f"{API_BASE}/homepageboardContents", params=params)
         except Exception as e:
-            raise print("예외가 발생했습니다.", e)
+            print("예외가 발생했습니다.", e)
+            continue
         try:
             response = response.json()
         except:
