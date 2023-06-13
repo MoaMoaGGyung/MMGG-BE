@@ -183,7 +183,7 @@ def get_homepageBoardContents():
     # print(board_ids)
     
     # get response
-    for P_board_no in board_ids[:10]:
+    for P_board_no in board_ids[:30]:
         if P_board_no is None:
             continue
         params = {"P_board_no": P_board_no,"AUTH_KEY": AUTH_KEY}
@@ -191,13 +191,15 @@ def get_homepageBoardContents():
             response = requests.get(f"{API_BASE}/homepageboardContents", params=params)
         except Exception as e:
             raise print("예외가 발생했습니다.", e)
-
-        response = response.json()
+        try:
+            response = response.json()
+        except:
+            continue
         status = response['OutBlock']
         result = response['RESULT']
         _department_id = _session.execute(select(board_table.c.department_id)
                                          .where(board_table.c.board_id == P_board_no)).all()[0][0]
-        print(_department_id)
+        # print(_department_id)
         for item in result:
             board_no = item['board_no']
             article_no = item['article_no']
