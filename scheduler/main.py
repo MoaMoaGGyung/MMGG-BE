@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 import json
 from glob import glob
-
+import openapi_response
 app = FastAPI()
 
 origins = {
@@ -31,3 +31,5 @@ def get_db():
 @app.get("/")
 def read_root():
     return {"Hello" : "World"}
+
+app.include_router(openapi_response.router)

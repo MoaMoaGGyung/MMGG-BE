@@ -50,3 +50,8 @@ def get_content_bycontentid(db:Session, departnemt_id: int, board_id: int, conte
               .filter(models.Contents.department_id == departnemt_id)
               .filter(models.Contents.board_id == board_id)
               .one())
+    
+def get_board_name_byboardid(db: Session, board_id:int):
+    return (db.query(models.Boards.board_name)
+              .filter(models.Boards.board_id == board_id)
+              .scalar())

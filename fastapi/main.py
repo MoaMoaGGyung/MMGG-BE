@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 import models, crud
 import json
+from util import read_department_name_by_id
 from glob import glob
 models.Base.metadata.create_all(bind=engine)
 
@@ -43,18 +44,18 @@ def read_posts_hot(limit: int = 10, db: Session = Depends(get_db)):
     for content in _contents:
         content = content.__dict__
         _temp_dict = {
-            "department": "temp_department",
-            "board": "temp_board",
+            "department": read_department_name_by_id(content["department_id"]),
+            "board": crud.get_board_name_byboardid(db=db, board_id=content["board_id"]),
             'title': content["title"],
             'uploadDate': content["update"],
             'dailyFluctuation': content["click_cnt"]
         }
         _dept_dict = {
-            "name": "temp",
+            "name": read_department_name_by_id(content["department_id"]),
             "id": content["department_id"]
         }
         _board_dict = {
-            "name" : "temp",
+            "name" : crud.get_board_name_byboardid(db=db, board_id=content["board_id"]),
             "id": content["board_id"]
         }
         _return_dict.append({"department": _dept_dict, "board": _board_dict, "post": _temp_dict})
@@ -128,7 +129,7 @@ def read_department_board_by_boardId(
     # _contents.append(_contents_list)
     _return_dict ={
         "dname": department_id, 
-        "bname": "temp",  ## board_name
+        "bname": crud.get_board_name_byboardid(db=db, board_id=board_id),  ## board_name
         "totalPage": totalPage, 
         "curPage": currentPage,
         "posts": _contents_list
@@ -147,7 +148,7 @@ def read_contents_by_department(
     print(_boards_id)
 
     _return_dict = {}
-    _return_dict["department"] = {"name": "temp", "id": department_id}
+    _return_dict["department"] = {"name": read_department_name_by_id(department_id), "id": department_id}
     _return_dict["boards"] = []
     
     for board_id in _boards_id:
@@ -168,7 +169,7 @@ def read_contents_by_department(
         print(_contents_list)
                 
         # _contents.append(_contents_list)
-        _return_dict["boards"].append({"name": "temp", "id": board_id, "posts": _contents_list})
+        _return_dict["boards"].append({"name": crud.get_board_name_byboardid(db=db, board_id=board_id), "id": board_id, "posts": _contents_list})
         
         
     # print(_contents)
@@ -202,7 +203,7 @@ def read_recent_posts(
             # print(_content_dict)
             _contents_list.append(_t_dict)
             
-        _temp_dict["department"] = {"name": "temp", "id": department_id}
+        _temp_dict["department"] = {"name": read_department_name_by_id(department_id), "id": department_id}
         _temp_dict["recent_posts"] = _contents_list
         _return_dict.append(_temp_dict)
     return _return_dict

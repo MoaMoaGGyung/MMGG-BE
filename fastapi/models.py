@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, DateTime
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, DateTime, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -20,7 +20,7 @@ class Contents(Base):
     board_id = Column(Integer, index=True)
     department_id = Column(Integer, index=True)
     title = Column(String(1000))
-    body = Column(String(10000))
+    body = Column(Text(4294000000))
     writer_name = Column(String(100))
     click_cnt = Column(Integer)
     attach_cnt = Column(Integer)
