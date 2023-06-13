@@ -47,7 +47,7 @@ def read_posts_hot(limit: int = 10, db: Session = Depends(get_db)):
             "department": read_department_name_by_id(content["department_id"]),
             "board": crud.get_board_name_byboardid(db=db, board_id=content["board_id"]),
             'title': content["title"],
-            'uploadDate': content["update"],
+            'uploadDate': content["update"].strftime('%Y-%m-%d'),
             'dailyFluctuation': content["click_cnt"]
         }
         _dept_dict = {
@@ -118,7 +118,7 @@ def read_department_board_by_boardId(
         _temp_dict = {
             'id': ex["content_id"],
             'title': ex["title"],
-            'uploadDate': ex["update"],
+            'uploadDate': ex["update"].strftime('%Y-%m-%d'),
             'view': ex["click_cnt"],
         }
         # print(_content_dict)
@@ -160,7 +160,7 @@ def read_contents_by_department(
             _temp_dict = {
                 'id': ex["content_id"],
                 'title': ex["title"],
-                'uploadDate': ex["update"],
+                'uploadDate': ex["update"].strftime('%Y-%m-%d'),
                 'view': ex["click_cnt"],
             }
             # print(_content_dict)

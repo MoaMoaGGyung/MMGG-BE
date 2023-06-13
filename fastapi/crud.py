@@ -22,6 +22,7 @@ def get_contents_byid(db: Session, board_id: int, skip: int =0, limit = 100):
     else:
         return (db.query(models.Contents)
                 .filter(models.Contents.board_id == board_id)
+                .order_by(models.Contents.update.desc())
                 .offset(skip)
                 .limit(limit)
                 .all())
