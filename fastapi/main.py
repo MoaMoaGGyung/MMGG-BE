@@ -109,7 +109,7 @@ def read_department_board_by_boardId(
 
     content = crud.get_contents_byid(db, board_id, (skip*limit), limit)
     content_count = len(list(crud.get_contents_byid(db, board_id, 0, 0)))
-    currentPage = (skip // limit) + 1
+    currentPage = skip + 1
     totalPage = (content_count // limit) + 1
     _contents_list = []
     for ex in content:            
@@ -128,7 +128,7 @@ def read_department_board_by_boardId(
                 
     # _contents.append(_contents_list)
     _return_dict ={
-        "dname": department_id, 
+        "dname": read_department_name_by_id(department_id), 
         "bname": crud.get_board_name_byboardid(db=db, board_id=board_id),  ## board_name
         "totalPage": totalPage, 
         "curPage": currentPage,
