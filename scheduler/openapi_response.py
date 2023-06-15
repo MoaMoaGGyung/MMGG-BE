@@ -6,6 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import Table, insert, MetaData, select
 import logging
 from datetime import datetime, timezone, timedelta
+import itertools
 
 router = APIRouter(
     prefix='/db'
@@ -233,6 +234,48 @@ def get_homepageBoardContents():
                     
         print(f'Board : {board_no}의 items {len(result)}가 성공적으로 삽입되었습니다.')
 
+@router.get("/get_attach_base_url_save")
+def get_attach_base_url_save():
+    _session = SessionLocal()
+    metadata_obj = MetaData(bind=engine)
+    # board_table = Table("boards", metadata_obj, autoload_with=engine)
+    content_table = Table("contents", metadata_obj, autoload_with=engine)
+    
+    _return_dict = []
+    with open ('./static/site_nm.json', 'r') as f:
+        site_nm_dict = json.load(f)
+        
+    for k, v in site_nm_dict.items():
+        content_ids = _session.execute(select(content_table.c.content_id).where(content_table.c.department_id == v).limit(7))
+        try:
+            content_ids = [i[0] for i in content_ids] # contents가 없으면 
+        except:
+            continue
+        for content_id in content_ids:
+            print('content_id : ', content_id)
+            try:
+                params = {"P_article_no": content_id, "AUTH_KEY": AUTH_KEY}
+                response = requests.get(f"{API_BASE}/homepageboardAttach", params=params)
+                result = response.json()['OutBlock_1'][0]
+                print(result)
+                _temp_dict = {
+                    'id': v,
+                    'name': k,
+                    'attach_url': result["attach_addr"]
+                }
+                _return_dict.append(_temp_dict)
+                print("_return_dict:", _return_dict)
+                try:
+                    with open('./static/site_attach_url.json', 'w', encoding='utf-8') as f:
+                        json.dump(_return_dict, f, ensure_ascii=False, indent=4)
+                except:
+                    pass
+                break
+            except Exception as e:
+                print("예외가 발생했습니다.", e)
+            
 if __name__ == "__main__":
+    get_attach_base_url_save()
+    # pass
     # get_site_nm_dict()
-    get_cmsBoard()
+    # get_cmsBoard()

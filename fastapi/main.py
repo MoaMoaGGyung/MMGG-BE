@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 import models, crud
 import json
-from util import read_department_name_by_id, read_site_nm_dict
+from util import read_department_name_by_id, read_site_nm_dict, get_base_url
 from glob import glob
 models.Base.metadata.create_all(bind=engine)
 
@@ -95,6 +95,7 @@ def read_detail_content_by_contentId(
             "id": content["board_id"]
         }
         _post_dict = {
+            "base_url": get_base_url(department_id),
             "id": content["content_id"],
             "body": content["body"],
             "view" : content["click_cnt"],
