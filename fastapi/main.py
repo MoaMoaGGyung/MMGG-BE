@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 import models, crud
 import json
-from util import read_department_name_by_id
+from util import read_department_name_by_id, read_site_nm_dict
 from glob import glob
 models.Base.metadata.create_all(bind=engine)
 
@@ -31,7 +31,21 @@ def get_db():
         yield db
     finally:
         db.close()
-             
+
+@app.get("/departments_only")
+def read_department_only():
+    site_nm_dict = read_site_nm_dict()
+    _return_dict = []
+    for k,v in site_nm_dict.items():
+        _temp_dict = {
+            "id": v,
+            "name": k
+        }
+        _return_dict.append(_temp_dict)
+    
+    return _return_dict
+        
+    
 @app.get("/departments/")
 def read_department(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     boards = crud.get_boards(db=db, skip=skip, limit=limit)
