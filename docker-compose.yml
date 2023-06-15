@@ -121,6 +121,7 @@ services:  # 컨테이너의 서비스라는것을 정의
       - "3306:3306" # 외부포트:내부포트
     volumes:
       - ./mysql/db:/docker-entrypoint-initdb.d # up되서 처음 실행할 sql문들을 모아놓은 폴더
+      - ./mysql/mysql-data:/var/lib/mysql
     environment:
       TZ: Asia/Seoul
       MYSQL_DATABASE: mmgg

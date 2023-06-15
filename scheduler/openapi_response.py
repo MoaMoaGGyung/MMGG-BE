@@ -183,7 +183,7 @@ def get_homepageBoardContents():
     # print(board_ids)
     
     # get response
-    for P_board_no in board_ids[:30]:
+    for P_board_no in board_ids:
         if P_board_no is None:
             continue
         params = {"P_board_no": P_board_no,"AUTH_KEY": AUTH_KEY}
