@@ -61,14 +61,14 @@ def read_posts_hot(limit: int = 10, db: Session = Depends(get_db)):
         _return_dict.append({"department": _dept_dict, "board": _board_dict, "post": _temp_dict})
     return _return_dict
 
-@app.get("/department/{department_id}/board/{board_id}/content/{content_id}")
+@app.get("/department/{department_id}/board/{board_id}/post/{post_id}")
 def read_detail_content_by_contentId(
         department_id: int = 1,
         board_id: int = 1,
-        content_id: int = 1,
+        post_id: int = 1,
         db: Session = Depends(get_db)):
     try:
-        content = crud.get_content_bycontentid(db, department_id, board_id, content_id)
+        content = crud.get_content_bycontentid(db, department_id, board_id, post_id)
     except:
         raise HTTPException(
             status_code = status.HTTP_404_NOT_FOUND,
