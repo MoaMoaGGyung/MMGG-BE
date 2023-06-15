@@ -1,0 +1,41 @@
+# fastapi default gitignore
+
+.idea
+.ipynb_checkpoints
+.mypy_cache
+.vscode
+__pycache__/
+.pytest_cache
+htmlcov
+dist
+site
+.coverage
+coverage.xml
+.netlify
+test.db
+log.txt
+Pipfile.lock
+env3.*
+env
+docs_build
+venv
+secrets.json
+oauth2_creds.json
+# vim temporary files
+*~
+.*.sw?
+application-aws.yml
+*.iml
+# es config
+elk/elasticsearch/_state/
+elk/elasticsearch/indices/
+elk/elasticsearch/snapshot_cache/
+
+.metals
+post_server/src/main/resources/application.yml
+
+# Cred
+AUTH_KEY.json
+
+# DB
+mysql-data
