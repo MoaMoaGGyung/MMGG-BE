@@ -70,36 +70,34 @@ def read_detail_content_by_contentId(
         db: Session = Depends(get_db)):
     try:
         content = crud.get_content_bycontentid(db, department_id, board_id, post_id)
+        content = content.__dict__
+        _return_dict = {}
+        _dept_dict = {
+            "name": read_department_name_by_id(content["department_id"]),
+            "id": content["department_id"]
+        }
+        _board_dict = {
+            "name" : crud.get_board_name_byboardid(db=db, board_id=content["board_id"]),
+            "id": content["board_id"]
+        }
+        _post_dict = {
+            "id": content["content_id"],
+            "body": content["body"],
+            "view" : content["click_cnt"],
+            "title" : content["title"],
+            "attachCnt": content["attach_cnt"],
+            "uploadDate" : content["update"].strftime('%Y-%m-%d'),
+            "writer": content["writer_name"]
+        }
+        _return_dict['department'] = _dept_dict
+        _return_dict['board'] = _board_dict
+        _return_dict['post'] = _post_dict
+        return _return_dict
     except:
         raise HTTPException(
             status_code = status.HTTP_404_NOT_FOUND,
             detail="Detailed Content NOT FOUND",
         )
-    return content
-    # for ex in content:            
-    #     ex = ex.__dict__ # to dict
-    #     # print(ex["content_id"])
-    #     _temp_dict = {
-    #         'id': ex["content_id"],
-    #         'title': ex["title"],
-    #         'uploadDate': ex["update"],
-    #         'view': ex["click_cnt"],
-    #     }
-    #     # print(_content_dict)
-    #     _contents_list.append(_temp_dict)
-    
-    # print(_contents_list)
-                
-    # # _contents.append(_contents_list)
-    # _return_dict ={
-    #     "dname": department_id, 
-    #     "bname": "temp",  ## board_name
-    #     "totalPage": totalPage, 
-    #     "curPage": currentPage,
-    #     "posts": _contents_list
-    # }
-        
-    # return _return_dict
 @app.get("/department/{department_id}/board/{board_id}")
 def read_department_board_by_boardId(
         skip: int = 0, # skip page

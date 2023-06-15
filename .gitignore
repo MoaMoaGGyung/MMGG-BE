@@ -36,3 +36,6 @@ post_server/src/main/resources/application.yml
 
 # Cred
 AUTH_KEY.json
+
+# DB
+mysql-data
