@@ -45,6 +45,7 @@ def read_posts_hot(limit: int = 10, db: Session = Depends(get_db)):
         content = content.__dict__
         _temp_dict = {
             "department": read_department_name_by_id(content["department_id"]),
+            "id": content['content_id'],
             "board": crud.get_board_name_byboardid(db=db, board_id=content["board_id"]),
             'title': content["title"],
             'uploadDate': content["update"].strftime('%Y-%m-%d'),
